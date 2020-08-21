@@ -1,0 +1,51 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block 'title' %}
+<title>About</title>
+{% endblock 'title' %}
+
+
+
+{% block 'content' %}
+<div class="about-section">
+  <h1>About this website</h1>
+  <p>Getting tired of not knowing where your money disappears by the end of the month?</p>
+  <p>With this website, you will be able track and manage all your expenses.</p>
+  <h2 style="text-align:center">You can</h2>
+  <div class="container">
+  <div class="row">
+    <div class="col-sm">
+        <img src="{% static 'add_Income.png' %}" height="100" width="100" style="background-color:transparent;"></img>
+        <h5>Add Income</h5>
+        <p>Add your monthly paycheck<br> or any other income you might have.</p>
+    </div>
+    <div class="col-sm">
+        <img src="{% static 'add_Outcome.png' %}" height="100" width="100" style="background-color:transparent;"></img>
+        <h5>Add Outcome</h5>
+        <p>Add each payment you make<br> so you can track them easier.</p>
+    </div>
+    <div class="col-sm">
+        <img src="{% static 'statistics.png' %}" height="100" width="100" style="background-color:transparent;"></img>
+        <h5>Get statistics</h5>
+        <p>Get reports on where you spend<br> the most money, and other reports.</p>
+    </div>
+  </div>
+</div>
+</div>
+<h2 style="text-align:center">About me</h2>
+<div class="row">
+  <div class="column mx-auto">
+    <div class="card">
+      <img src="{% static 'Miras.jpeg' %}" alt="Miras" style="width:100%">
+      <div class="container">
+        <h2>Miras Safadi</h2>
+        <p class="title">Developer</p>
+        <p>I am a software engineer in my last semester, I created this website as a challenge.</p>
+        <p>safadimiras@gmail.com</p>
+        <p><button class="button" onClick="{% url 'sendEmail' %}">Contact</button></p>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock 'content' %}
