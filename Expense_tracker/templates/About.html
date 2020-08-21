@@ -43,7 +43,9 @@
         <p class="title">Developer</p>
         <p>I am a software engineer in my last semester, I created this website as a challenge.</p>
         <p>safadimiras@gmail.com</p>
-        <p><button class="button" onClick="{% url 'sendEmail' %}">Contact</button></p>
+        <form action="sendEmail" method="GET">
+            <p><button class="button" type="submit">Contact</button></p>
+        </form>
       </div>
     </div>
   </div>
