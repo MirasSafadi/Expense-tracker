@@ -17,19 +17,19 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
 </head>
 <body>
-    <nav class="navbar sticky-top navbar-expand-sm navbar-light" style="background-color: #66beff;">
-      <a class="navbar-brand" href="{% url 'home' %}">
-        <img src="{% static 'icon32.png' %}" width="32" height="32" class="d-inline-block align-top" alt="">
+    <nav class="navbar sticky-top navbar-expand-sm navbar-light" style="background-color: #3265b8;-webkit-box-shadow: 0 8px 6px -6px #999;-moz-box-shadow: 0 8px 6px -6px #999;box-shadow: 0 8px 6px -6px #999; width:100%%">
+      <a class="navbar-brand" href="{% url 'home' %}" style="color:white;">
+        <img src="{% static 'icon32.png' %}" width="32" height="32" class="d-inline-block align-top" alt="" >
         Expense Tracker
       </a>
 
       <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
         <ul class="navbar-nav mr-auto mt-2 mt-lg-0">
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'home' %}">Home <span class="sr-only"></span></a>
+          <li class="nav-item active" >
+            <a class="nav-link" href="{% url 'home' %}" style="color:white;">Home <span class="sr-only"></span></a>
           </li>
-          <li class="nav-item active">
-            <a class="nav-link" href="{% url 'about' %}">About <span class="sr-only"></a>
+          <li class="nav-item active" >
+            <a class="nav-link" href="{% url 'about' %}" style="color:white;">About <span class="sr-only"></a>
           </li>
           {% block 'left_navitems' %}
           {% endblock 'left_navitems' %}
@@ -45,25 +45,79 @@
     {% endblock 'content' %}
 
     <!-- The sign up Modal -->
-    <div id="signupModal" class="modal">
+    <div id="signupModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Create a new account</h4>
+            <span class="close">&times;</span>
+          </div><!-- modal head -->
+          <div class="modal-body">Dynamic Modal Body</div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
 
-      <!-- Modal content -->
-      <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>The sign up Modal</p>
-      </div>
 
-    </div>
     <!-- The login Modal -->
-    <div id="loginModal" class="modal">
+    <div id="loginModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Log in to your account</h4>
+            <span class="close">&times;</span>
+          </div> <!-- modal head -->
+          <div class="modal-body">
+            <form method="post">
+                {% csrf_token %}
+                  {% for field in login_form %}
+                      <div class="form-group">
+                      {{ field.label_tag }}
+                      {{ field }}
+                      </div>
+                      <br/>
+                  {% endfor %}
+                <button type="submit" class="btn btn-info">Login</button>
+              </form>
+          </div> <!-- modal body -->
+        </div><!-- /.modal-content -->
+      </div> <!-- modal dialog -->
+    </div> <!-- modal -->
 
-      <!-- Modal content -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+      {% comment %} <!-- Modal content -->
       <div class="modal-content">
-        <span class="close">&times;</span>
-        <p>The login Modal</p>
+            <div class="container">
+            <span class="close">&times;</span>
+            <div class="modal-header"><h4 class="modal-title">Log in to your account</h4></div>
+            <div class="modal-body">
+            <form method="post">
+              {% csrf_token %}
+                {% for field in login_form %}
+                    <div class="form-group">
+                    {{ field.label_tag }}
+                    {{ field }}
+                    </div>
+                    <br/>
+                {% endfor %}
+              <div class="container"><button type="submit" class="btn btn-info">Login</button></div>
+            </form>
+            </div>
+            </div>
       </div>
 
-    </div>
+    </div> {% endcomment %}
 
 
 

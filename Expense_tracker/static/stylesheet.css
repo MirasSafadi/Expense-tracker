@@ -26,7 +26,7 @@ body {
   .about-section {
     padding: 50px;
     text-align: center;
-    background-color: #474e5d;
+    background-color: #62A87C;
     color: white;
   }
   
@@ -95,6 +95,26 @@ body {
   padding: 20px;
   border: 1px solid #888;
   width: 80%;
+}
+
+
+
+
+.form {
+  margin: 0 auto;
+  width: 100%;
+}
+
+.form-label{
+  display: inline;
+  text-align: right;
+  /* float: left; */
+}
+
+.form-input{
+  display: inline;
+  text-align: left;
+  /* float: right; */
 }
 
 /* The Close Button */
