@@ -131,3 +131,8 @@ body {
   text-decoration: none;
   cursor: pointer;
 }
+
+label.required::before {
+  content: '*';
+  color: red;
+}

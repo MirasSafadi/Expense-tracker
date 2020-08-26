@@ -67,6 +67,8 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'Expense_tracker.context_processors.get_login_form',
+                'Expense_tracker.context_processors.get_signup_form',
             ],
         },
     },
