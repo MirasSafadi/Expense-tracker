@@ -8,4 +8,5 @@ urlpatterns = [
     path('sendEmail', v.sendEmail),
     path('login', v.login),
     path('signup', v.signup),
+    path('logout', v.logout),
 ]

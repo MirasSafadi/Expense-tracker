@@ -9,4 +9,8 @@ class User(models.Model):
 
     def __str__(self):
         return '%s %s, %s'%(self.first_name,self.last_name,self.user_email)
-    
+    def to_dict(self):
+        user_dict = {'user_email': self.user_email,
+                    'first_name': self.first_name,
+                    'last_name':self.last_name}
+        return user_dict
