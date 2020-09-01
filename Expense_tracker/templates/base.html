@@ -50,18 +50,34 @@
         {% endif %}
       </div>
     </nav>
+                
     {% block 'content' %}
     {% endblock 'content' %}
-
+{% if messages %} 
+              {% for message in messages %}
+                {% if 'login_error' in message.extra_tags %}
+                  <div class="alert alert-danger alert-dismissable" role="alert"> <button class="close" data-dismiss="alert">
+                  <small><sup>&times;</sup></small> </button> {{ message }} </div>
+                {% endif %} 
+              {% endfor%} 
+            {% endif %}
     <!-- The sign up Modal -->
     <div id="signupModal" class="modal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-scrollable">
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Create a new account</h4>
-            <span class="close">&times;</span>
+            <span id="signup_close_span" class="close" aria-label="close">&times;</span>
           </div><!-- modal head -->
           <div class="modal-body">
+            {% if messages %} 
+              {% for message in messages %}
+                {% if 'signup_error' in message.extra_tags %}
+                  <div class="alert alert-danger alert-dismissable" role="alert"> <button class="close" data-dismiss="alert">
+                  <small><sup>&times;</sup></small> </button> {{ message }} </div>
+                {% endif %}
+              {% endfor%} 
+            {% endif %}         
             <form action="signup" method="post">
                 {% csrf_token %}
                   {% for field in signup_form %}
@@ -72,7 +88,8 @@
                       
                   {% endfor %}
                 <button type="submit" class="btn btn-info" >Register</button>
-              </form>
+            </form>
+
           </div><!-- /.modal-body -->
         </div><!-- /.modal-content -->
       </div><!-- /.modal-dialog -->
@@ -85,9 +102,17 @@
         <div class="modal-content">
           <div class="modal-header">
             <h4 class="modal-title">Log in to your account</h4>
-            <span class="close">&times;</span>
+            <span id="login_close_span" class="close" aria-label="close">&times;</span>
           </div> <!-- modal head -->
           <div class="modal-body">
+            {% if messages %} 
+              {% for message in messages %}
+                {% if 'login_error' in message.extra_tags %}
+                  <div class="alert alert-danger alert-dismissable" role="alert"> <button class="close" data-dismiss="alert">
+                  <small><sup>&times;</sup></small> </button> {{ message }} </div>
+                {% endif %} 
+              {% endfor%} 
+            {% endif %}
             <form action="login" method="post">
                 {% csrf_token %}
                   {% for field in login_form %}
@@ -116,8 +141,8 @@
     var login_btn = document.getElementById("loginBtn");
 
     // Get the <span> element that closes the modal
-    var signup_close_span = document.getElementsByClassName("close")[0];
-    var login_close_span = document.getElementsByClassName("close")[1];
+    var signup_close_span = document.getElementById("signup_close_span");
+    var login_close_span = document.getElementById("login_close_span");
 
     // When the user clicks the button, open the modal 
     signup_btn.onclick = function() {

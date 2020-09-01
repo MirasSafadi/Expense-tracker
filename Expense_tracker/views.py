@@ -1,6 +1,7 @@
 from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from Expense_tracker import forms
+from django.contrib import messages
 from.models import User
 import webbrowser
 
@@ -13,6 +14,7 @@ def home(request):
         # print(dic)
     return render(request,'home.html',dic)
 def login(request):
+    isError = True
     if request.method == 'POST':
         login_form = forms.LoginForm(request.POST)
         if login_form.is_valid():
@@ -24,13 +26,13 @@ def login(request):
                 if user.password == password:
                     #add user to session and redirect
                     request.session['current_user']=user.to_dict()
-                    print('success')
-                else:
-                    print('failure: wrong password')
-            else:
-                print('failure: user does not exist')
-        else:
-            print('failure: form invalid')
+                    isError = False
+            if isError: #Wrong credentials
+                messages.error(request,'Wrong email/password.',extra_tags="login_error")
+                return HttpResponse('<script>history.back();</script>')
+        else:#form invalid
+            messages.error(request,'Invalid email/password field.',extra_tags="login_error")
+            return HttpResponse('<script>history.back();</script>')
     return redirect('home')
 def signup(request):
     if request.method == 'POST':
@@ -44,19 +46,19 @@ def signup(request):
 
             if User.objects.filter(user_email=email).exists():
                 #check if user exists
-                print('Error: User exists')
+                messages.error(request,'Error: User exists.',extra_tags="signup_error")
             elif password != password_confirmation:
                 #check if passwords match
-                print("Error: passwords don't match")
+                messages.error(request,"Error: passwords don't match",extra_tags="signup_error")
             else:
                 #create a new user and save it in DB
                 user = User(user_email=email,password=password,first_name=first_name,last_name=last_name)
                 user.save()
                 #log the new user in
                 request.session['current_user']=user.to_dict()
-                print('success')
+
         else:
-            print('failure: form invalid')
+            messages.error(request,"Error: One or more of the fields is invalid.",extra_tags="signup_error")
     return redirect('home')
 def logout(request):
     try:
