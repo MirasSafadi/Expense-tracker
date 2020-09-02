@@ -53,14 +53,6 @@
                 
     {% block 'content' %}
     {% endblock 'content' %}
-{% if messages %} 
-              {% for message in messages %}
-                {% if 'login_error' in message.extra_tags %}
-                  <div class="alert alert-danger alert-dismissable" role="alert"> <button class="close" data-dismiss="alert">
-                  <small><sup>&times;</sup></small> </button> {{ message }} </div>
-                {% endif %} 
-              {% endfor%} 
-            {% endif %}
     <!-- The sign up Modal -->
     <div id="signupModal" class="modal" tabindex="-1" role="dialog">
       <div class="modal-dialog modal-dialog-scrollable">
@@ -73,8 +65,12 @@
             {% if messages %} 
               {% for message in messages %}
                 {% if 'signup_error' in message.extra_tags %}
-                  <div class="alert alert-danger alert-dismissable" role="alert"> <button class="close" data-dismiss="alert">
-                  <small><sup>&times;</sup></small> </button> {{ message }} </div>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error: </strong> {{message}}.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
                 {% endif %}
               {% endfor%} 
             {% endif %}         
@@ -108,8 +104,12 @@
             {% if messages %} 
               {% for message in messages %}
                 {% if 'login_error' in message.extra_tags %}
-                  <div class="alert alert-danger alert-dismissable" role="alert"> <button class="close" data-dismiss="alert">
-                  <small><sup>&times;</sup></small> </button> {{ message }} </div>
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error: </strong> {{message}}.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
                 {% endif %} 
               {% endfor%} 
             {% endif %}
@@ -132,6 +132,7 @@
 
 
     <script>
+    
     // Get the modal
     var signup_modal = document.getElementById("signupModal");
     var login_modal = document.getElementById("loginModal");
@@ -151,7 +152,18 @@
     login_btn.onclick = function() {
       login_modal.style.display = "block";
     }
-
+    $(document).ready(function () {
+      {% if messages %}
+        {% for message in messages %}
+          {% if 'login_error' in message.extra_tags %}
+            login_modal.style.display = "block";
+          {% endif %}
+          {% if 'signup_error' in message.extra_tags %}
+            signup_modal.style.display = "block";
+          {% endif %}
+        {% endfor %}
+      {% endif %}
+    });
     // When the user clicks on <span> (x), close the modal
     signup_close_span.onclick = function() {
       signup_modal.style.display = "none";

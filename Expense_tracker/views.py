@@ -28,10 +28,10 @@ def login(request):
                     request.session['current_user']=user.to_dict()
                     isError = False
             if isError: #Wrong credentials
-                messages.error(request,'Wrong email/password.',extra_tags="login_error")
+                messages.error(request,'Wrong email/password',extra_tags="login_error")
                 return HttpResponse('<script>history.back();</script>')
         else:#form invalid
-            messages.error(request,'Invalid email/password field.',extra_tags="login_error")
+            messages.error(request,'Invalid email/password field',extra_tags="login_error")
             return HttpResponse('<script>history.back();</script>')
     return redirect('home')
 def signup(request):
@@ -46,10 +46,10 @@ def signup(request):
 
             if User.objects.filter(user_email=email).exists():
                 #check if user exists
-                messages.error(request,'Error: User exists.',extra_tags="signup_error")
+                messages.error(request,'User exists',extra_tags="signup_error")
             elif password != password_confirmation:
                 #check if passwords match
-                messages.error(request,"Error: passwords don't match",extra_tags="signup_error")
+                messages.error(request,"Passwords don't match",extra_tags="signup_error")
             else:
                 #create a new user and save it in DB
                 user = User(user_email=email,password=password,first_name=first_name,last_name=last_name)
@@ -58,7 +58,7 @@ def signup(request):
                 request.session['current_user']=user.to_dict()
 
         else:
-            messages.error(request,"Error: One or more of the fields is invalid.",extra_tags="signup_error")
+            messages.error(request,"One or more of the fields is invalid.",extra_tags="signup_error")
     return redirect('home')
 def logout(request):
     try:

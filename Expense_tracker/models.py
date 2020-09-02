@@ -1,4 +1,5 @@
 from django.db import models
+import datetime as dt
 
 # Create your models here.
 class User(models.Model):
@@ -14,3 +15,21 @@ class User(models.Model):
                     'first_name': self.first_name,
                     'last_name':self.last_name}
         return user_dict
+class Income(models.Model):
+    user_email = models.ForeignKey("User", on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
+    isPeriodic = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        d = self.date
+        return '%d, %s, saved on: %d.%d.%d %d:%d'%(self.amount,'Periodic' if(self.isPeriodic) else 'non-Periodic', d.day, d.month, d.year, d.hour, d.minute)    
+class Outcome(models.Model):
+    user = models.ForeignKey("User", on_delete=models.CASCADE)
+    amount = models.IntegerField(default=0)
+    isPeriodic = models.BooleanField(default=False)
+    date = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        d = self.date
+        return '%d, %s, saved on: %d.%d.%d %d:%d'%(self.amount,'Periodic' if(self.isPeriodic) else 'non-Periodic', d.day, d.month, d.year, d.hour, d.minute) 
