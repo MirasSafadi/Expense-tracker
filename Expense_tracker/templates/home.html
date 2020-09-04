@@ -1,6 +1,132 @@
 {% extends 'base.html' %}
 
 {% block 'content' %}
-<div style="background-color:#B2FF9E;">
-</div>
+
+<style>
+    .main-window{
+        background: hsla(217, 57%, 46%, 1);
+        background: linear-gradient(270deg, hsla(217, 57%, 46%, 1) 10%, hsla(186, 100%, 69%, 1) 100%);
+        background: -moz-linear-gradient(270deg, hsla(217, 57%, 46%, 1) 10%, hsla(186, 100%, 69%, 1) 100%);
+        background: -webkit-linear-gradient(270deg, hsla(217, 57%, 46%, 1) 10%, hsla(186, 100%, 69%, 1) 100%);
+        filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3265B8", endColorstr="#60EFFF", GradientType=1 );
+    }
+</style>
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+</script>
+<div class="main-window">
+    {% if current_user %}
+    <div class="row">
+        <div class="col-lg-7 mx-auto">
+            <div class="card border-0 shadow">
+                <div class="card-body p-5">
+                    <!-- Responsive table -->
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            
+                            <thead>
+                                <h3 style="color:black;">Your Incomes:</h3>
+                                <tr>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date Added</th>
+                                    <th scope="col">Periodic?</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if incomes %}
+                                    {% for income_item in incomes %}
+                                        <tr>
+                                            <td scope="row">{{income_item.amount}}</td>
+                                            <td>{{income_item.date.day}}/{{income_item.date.month}}/{{income_item.date.year}} at {{income_item.date.hour}}:{{income_item.date.minute}}</td>
+                                            <td>{% if income_item.isPeriodic %}Yes{% else %}No{% endif %}</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <form action="deleteIncome/{{income_item.id}}" method="GET">
+                                                            <button class="btn btn-danger btn-sm rounded-0" type="submit" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                                        </form>
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </br>
+    
+
+
+
+
+
+
+
+
+    </br>
+    <div class="row">
+        <div class="col-lg-7 mx-auto">
+            <div class="card border-0 shadow">
+                <div class="card-body p-5">
+                    <!-- Responsive table -->
+                    <div class="table-responsive">
+                        <table class="table m-0">
+                            
+                            <thead>
+                                <h3 style="color:black;">Your Outcomes:</h3>
+                                <tr>
+                                    <th scope="col">Amount</th>
+                                    <th scope="col">Date Added</th>
+                                    <th scope="col">Periodic?</th>
+                                    <th scope="col"></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% if outcomes %}
+                                    {% for outcome_item in outcomes %}
+                                        <tr>
+                                            <td scope="row">{{outcome_item.amount}}</td>
+                                            <td>{{outcome_item.date.day}}/{{outcome_item.date.month}}/{{outcome_item.date.year}} at {{outcome_item.date.hour}}:{{outcome_item.date.minute}}</td>
+                                            <td>{% if outcome_item.isPeriodic %}Yes{% else %}No{% endif %}</td>
+                                            <td>
+                                                <!-- Call to action buttons -->
+                                                <ul class="list-inline m-0">
+                                                    <li class="list-inline-item">
+                                                        <button class="btn btn-success btn-sm rounded-0" type="button" data-toggle="tooltip" data-placement="top" title="Edit"><i class="fa fa-edit"></i></button>
+                                                    </li>
+                                                    <li class="list-inline-item">
+                                                        <form action="deleteOutcome/{{outcome_item.id}}" method="GET">
+                                                            <button class="btn btn-danger btn-sm rounded-0" type="submit" data-toggle="tooltip" data-placement="top" title="Delete"><i class="fa fa-trash"></i></button>
+                                                        </form>                                                    
+                                                    </li>
+                                                </ul>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
+                                {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    </br>
+    </br>
+    </br>
+    </br>
+    </br>
+</div>{% endif %}
 {% endblock 'content' %}

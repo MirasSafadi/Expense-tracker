@@ -136,3 +136,12 @@ label.required::after {
   content: '*';
   color: red;
 }
+
+
+.main-window{
+  background: hsla(217, 57%, 46%, 1);
+  background: linear-gradient(270deg, hsla(217, 57%, 46%, 1) 10%, hsla(186, 100%, 69%, 1) 100%);
+  background: -moz-linear-gradient(270deg, hsla(217, 57%, 46%, 1) 10%, hsla(186, 100%, 69%, 1) 100%);
+  background: -webkit-linear-gradient(270deg, hsla(217, 57%, 46%, 1) 10%, hsla(186, 100%, 69%, 1) 100%);
+  filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3265B8", endColorstr="#60EFFF", GradientType=1 );
+}

@@ -2,17 +2,27 @@ from django.shortcuts import redirect, render
 from django.http import HttpResponse
 from Expense_tracker import forms
 from django.contrib import messages
-from.models import User
+from.models import User, Income, Outcome
 import webbrowser
 
 # Create your views here.
 def home(request):
     dic = {}
     if 'current_user' in request.session:
-        user = request.session['current_user']
-        dic = {'current_user':user}
+        current_user = request.session['current_user']
+        user = User.objects.get(user_email=current_user['user_email'])
+        incomes_queryset = Income.objects.filter(user=user)
+        outcomes_queryset = Outcome.objects.filter(user=user)
+        incomes = []
+        outcomes = []
+        for item in incomes_queryset:
+            incomes.append(item)
+        for item in outcomes_queryset:
+            outcomes.append(item)
+        dic = {'current_user':current_user,'incomes':incomes,'outcomes':outcomes}
         # print(dic)
     return render(request,'home.html',dic)
+
 def login(request):
     isError = True
     if request.method == 'POST':
@@ -34,6 +44,7 @@ def login(request):
             messages.error(request,'Invalid email/password field',extra_tags="login_error")
             return HttpResponse('<script>history.back();</script>')
     return redirect('home')
+
 def signup(request):
     if request.method == 'POST':
         signup_form = forms.SignupForm(request.POST)
@@ -60,6 +71,7 @@ def signup(request):
         else:
             messages.error(request,"One or more of the fields is invalid.",extra_tags="signup_error")
     return redirect('home')
+
 def logout(request):
     try:
         del request.session['current_user']
@@ -67,6 +79,7 @@ def logout(request):
         return HttpResponse("<h1>Internal Server Error</h1></br><p>Could not find 'current_user' in session")
     # print(request.session['current_user'])
     return redirect('home')
+
 def about(request):
     dic = {}
     if 'current_user' in request.session:
@@ -74,6 +87,17 @@ def about(request):
         dic = {'current_user':user}
         # print(dic)
     return render(request,'About.html',dic)
+
+def delete_income(request,income_id):
+    income = Income.objects.get(id=income_id)
+    income.delete()
+    return redirect('home')
+
+def delete_outcome(request,outcome_id):
+    outcome = Outcome.objects.get(id=outcome_id)
+    outcome.delete()
+    return redirect('home')
+
 def sendEmail(request):
     webbrowser.open('mailto:safadimiras@gmail.com?subject=Expense Tracker inquiry', new=2)
     return HttpResponse('<script>history.back();</script>')

@@ -9,4 +9,6 @@ urlpatterns = [
     path('login', v.login),
     path('signup', v.signup),
     path('logout', v.logout),
+    path('deleteIncome/<income_id>', v.delete_income),
+    path('deleteOutcome/<outcome_id>', v.delete_outcome),
 ]
