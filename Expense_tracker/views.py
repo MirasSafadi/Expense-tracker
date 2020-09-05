@@ -10,20 +10,27 @@ def home(request):
     dic = {}
     if 'current_user' in request.session:#if a user is logged in
         add_income_form = forms.Add_income_form()
+        add_outcome_form = forms.Add_outcome_form()
         current_user = request.session['current_user']
         user = User.objects.get(user_email=current_user['user_email'])
-        incomes_queryset = Income.objects.filter(user=user)
-        outcomes_queryset = Outcome.objects.filter(user=user)
+        incomes_queryset = Income.objects.filter(user=user).order_by('-date')
+        outcomes_queryset = Outcome.objects.filter(user=user).order_by('-date')
+        balance = 0
         incomes = []
         outcomes = []
         for item in incomes_queryset:
             incomes.append(item)
+            balance += item.amount
         for item in outcomes_queryset:
             outcomes.append(item)
+            balance -= item.amount
         dic = {'current_user':current_user,
                 'incomes':incomes,
                 'outcomes':outcomes,
-                'add_income_form':add_income_form,}
+                'add_income_form':add_income_form,
+                'add_outcome_form':add_outcome_form,
+                'balance':balance,
+                }
         # print(dic)
     return render(request,'home.html',dic)
 
@@ -100,6 +107,46 @@ def delete_income(request,income_id):
 def delete_outcome(request,outcome_id):
     outcome = Outcome.objects.get(id=outcome_id)
     outcome.delete()
+    return redirect('home')
+
+def add_income(request):
+    if request.method == 'POST':
+        add_income_form = forms.Add_income_form(request.POST)
+
+        if 'current_user' in request.session:
+            current_user = request.session['current_user']
+            user = User.objects.get(user_email=current_user['user_email'])
+
+            if add_income_form.is_valid():
+                amount = add_income_form.cleaned_data['amount']
+                isPeriodic = add_income_form.cleaned_data['isPeriodic']
+
+                if amount <= 0:
+                    messages.error(request,'Amount must be positive',extra_tags="add_income_error")
+                else:
+                    income = Income(user=user,amount = amount,isPeriodic=isPeriodic)
+                    income.save()
+            else:
+               messages.error(request,'One or more of the fields is invalid!',extra_tags="add_income_error") 
+    return redirect('home')
+
+def add_outcome(request):
+    if request.method == 'POST':
+        add_outcome_form = forms.Add_outcome_form(request.POST)
+
+    if 'current_user' in request.session:
+        current_user = request.session['current_user']
+        user = User.objects.get(user_email=current_user['user_email'])
+        if add_outcome_form.is_valid():
+            amount = add_outcome_form.cleaned_data['amount']
+            isPeriodic = add_outcome_form.cleaned_data['isPeriodic']
+            if amount <= 0:
+                messages.error(request,'Amount must be positive',extra_tags="add_outcome_error")
+            else:
+                outcome = Outcome(user=user,amount = amount,isPeriodic=isPeriodic)
+                outcome.save()
+        else:
+           messages.error(request,'One or more of the fields is invalid!',extra_tags="add_outcome_error") 
     return redirect('home')
 
 def sendEmail(request):
