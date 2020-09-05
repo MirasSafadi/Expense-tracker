@@ -11,13 +11,56 @@
         filter: progid: DXImageTransform.Microsoft.gradient( startColorstr="#3265B8", endColorstr="#60EFFF", GradientType=1 );
     }
 </style>
-<script>
-    $(function () {
-        $('[data-toggle="tooltip"]').tooltip();
-    });
-</script>
+
 <div class="main-window">
     {% if current_user %}
+
+
+
+
+
+    <!-- The Add Income Modal -->
+    <div id="AddIncomeModal" class="modal" tabindex="-1" role="dialog">
+      <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h4 class="modal-title">Add Income</h4>
+            <span id="add_income_close_span" class="close" aria-label="close">&times;</span>
+          </div> <!-- modal head -->
+          <div class="modal-body">
+            {% if messages %} 
+              {% for message in messages %}
+                {% if 'add_income_error' in message.extra_tags %}
+                  <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    <strong>Error: </strong> {{message}}.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                      <span aria-hidden="true">&times;</span>
+                    </button>
+                  </div>
+                {% endif %} 
+              {% endfor%} 
+            {% endif %}
+            <form action="add_income" method="post">
+                {% csrf_token %}
+                  {% for field in add_income_form %}
+                      <div class="form-group">
+                      {{ field.label_tag }}
+                      {{ field }}
+                      </div>
+                      
+                  {% endfor %}
+                <button type="submit" class="btn btn-info">Add</button>
+              </form>
+          </div> <!-- modal body -->
+        </div><!-- modal content -->
+      </div> <!-- modal dialog -->
+    </div> <!-- modal -->
+
+
+
+
+
+
     <div class="row">
         <div class="col-lg-7 mx-auto">
             <div class="card border-0 shadow">
@@ -26,8 +69,9 @@
                     <div class="table-responsive">
                         <table class="table m-0">
                             
-                            <thead>
-                                <h3 style="color:black;">Your Incomes:</h3>
+                            <thead style="">
+                                <h3 style="color:black;" style="float:left; display:inline-block">Your Incomes:</h3>
+                                <button id="AddIncomeBtn" type="button" class="btn btn-success" style="float:right; display:inline-block">Add Income</button>
                                 <tr>
                                     <th scope="col">Amount</th>
                                     <th scope="col">Date Added</th>
@@ -39,7 +83,7 @@
                                 {% if incomes %}
                                     {% for income_item in incomes %}
                                         <tr>
-                                            <td scope="row">{{income_item.amount}}</td>
+                                            <td scope="row" style="color:green;">{{income_item.amount}}</td>
                                             <td>{{income_item.date.day}}/{{income_item.date.month}}/{{income_item.date.year}} at {{income_item.date.hour}}:{{income_item.date.minute}}</td>
                                             <td>{% if income_item.isPeriodic %}Yes{% else %}No{% endif %}</td>
                                             <td>
@@ -97,7 +141,7 @@
                                 {% if outcomes %}
                                     {% for outcome_item in outcomes %}
                                         <tr>
-                                            <td scope="row">{{outcome_item.amount}}</td>
+                                            <td scope="row" style="color:red;">{{outcome_item.amount}}</td>
                                             <td>{{outcome_item.date.day}}/{{outcome_item.date.month}}/{{outcome_item.date.year}} at {{outcome_item.date.hour}}:{{outcome_item.date.minute}}</td>
                                             <td>{% if outcome_item.isPeriodic %}Yes{% else %}No{% endif %}</td>
                                             <td>
@@ -129,4 +173,58 @@
     </br>
     </br>
 </div>{% endif %}
+<script>
+    $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+    });
+
+
+    // Get the modal
+    {% comment %} var signup_modal = document.getElementById("signupModal"); {% endcomment %}
+    var add_income_modal = document.getElementById("AddIncomeModal");
+
+    // Get the button that opens the modal
+    {% comment %} var signup_btn = document.getElementById("signupBtn"); {% endcomment %}
+    var add_income_btn = document.getElementById("AddIncomeBtn");
+
+    // Get the <span> element that closes the modal
+    {% comment %} var signup_close_span = document.getElementById("signup_close_span"); {% endcomment %}
+    var add_income_close_span = document.getElementById("add_income_close_span");
+
+    // When the user clicks the button, open the modal 
+    {% comment %} signup_btn.onclick = function() {
+      signup_modal.style.display = "block";
+    } {% endcomment %}
+    add_income_btn.onclick = function() {
+      add_income_modal.style.display = "block";
+    }
+    $(document).ready(function () {
+      {% if messages %}
+        {% for message in messages %}
+          {% if 'add_income_error' in message.extra_tags %}
+            add_income_modal.style.display = "block";
+          {% endif %}
+          {% comment %} {% if 'signup_error' in message.extra_tags %}
+            signup_modal.style.display = "block";
+          {% endif %} {% endcomment %}
+        {% endfor %}
+      {% endif %}
+    });
+    // When the user clicks on <span> (x), close the modal
+    {% comment %} signup_close_span.onclick = function() {
+      signup_modal.style.display = "none";
+    } {% endcomment %}
+    add_income_close_span.onclick = function() {
+      add_income_modal.style.display = "none";
+    }
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+      {% comment %} if (event.target == signup_modal || event.target == add_income_modal) { {% endcomment %}
+      if (event.target == add_income_modal) {
+        {% comment %} signup_modal.style.display = "none"; {% endcomment %}
+        add_income_modal.style.display = "none";
+      }
+    }
+</script>
 {% endblock 'content' %}

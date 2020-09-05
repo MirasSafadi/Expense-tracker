@@ -8,7 +8,8 @@ import webbrowser
 # Create your views here.
 def home(request):
     dic = {}
-    if 'current_user' in request.session:
+    if 'current_user' in request.session:#if a user is logged in
+        add_income_form = forms.Add_income_form()
         current_user = request.session['current_user']
         user = User.objects.get(user_email=current_user['user_email'])
         incomes_queryset = Income.objects.filter(user=user)
@@ -19,7 +20,10 @@ def home(request):
             incomes.append(item)
         for item in outcomes_queryset:
             outcomes.append(item)
-        dic = {'current_user':current_user,'incomes':incomes,'outcomes':outcomes}
+        dic = {'current_user':current_user,
+                'incomes':incomes,
+                'outcomes':outcomes,
+                'add_income_form':add_income_form,}
         # print(dic)
     return render(request,'home.html',dic)
 
